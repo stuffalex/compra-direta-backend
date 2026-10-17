@@ -4,12 +4,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.ICategoriaCompraDataProvider;
+import br.com.desafio.compradireta.domain.interfaces.dataprovider.ICompraDiretaDataProvider;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IFornecedorDataProvider;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.INotificacaoFornecedorDataProvider;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IUnidadeCompradoraDataProvider;
 import br.com.desafio.compradireta.domain.usecase.categoriacompra.listar.ListarCategoriasCompraUseCase;
 import br.com.desafio.compradireta.domain.usecase.fornecedor.listar.ListarFornecedoresUseCase;
 import br.com.desafio.compradireta.domain.usecase.notificacao.listar.ListarNotificacoesPorCompraUseCase;
+import br.com.desafio.compradireta.domain.usecase.notificacao.publicar.NotificarFornecedoresPublicacaoUseCase;
 import br.com.desafio.compradireta.domain.usecase.unidadecompradora.listar.ListarUnidadesCompradorasUseCase;
 
 @Configuration
@@ -42,6 +44,16 @@ public class DominioUseCaseFactory {
     public ListarNotificacoesPorCompraUseCase listarNotificacoesPorCompraUseCase(
             INotificacaoFornecedorDataProvider notificacaoFornecedorDataProvider) {
         return ListarNotificacoesPorCompraUseCase.builder()
+                .notificacaoFornecedorDataProvider(notificacaoFornecedorDataProvider)
+                .build();
+    }
+
+    @Bean
+    public NotificarFornecedoresPublicacaoUseCase notificarFornecedoresPublicacaoUseCase(
+            ICompraDiretaDataProvider compraDiretaDataProvider,
+            INotificacaoFornecedorDataProvider notificacaoFornecedorDataProvider) {
+        return NotificarFornecedoresPublicacaoUseCase.builder()
+                .compraDiretaDataProvider(compraDiretaDataProvider)
                 .notificacaoFornecedorDataProvider(notificacaoFornecedorDataProvider)
                 .build();
     }
