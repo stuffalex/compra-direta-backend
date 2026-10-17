@@ -39,8 +39,7 @@ class InexigibilidadeStrategyTest {
     }
 
     @Test
-    void deveLancarNegocioExceptionQuandoListaNulaOuVaziaTest() {
-        assertThrows(NegocioException.class, () -> strategy.apurar(null));
+    void deveLancarNegocioExceptionQuandoListaVaziaTest() {
         assertThrows(NegocioException.class, () -> strategy.apurar(List.of()));
     }
 

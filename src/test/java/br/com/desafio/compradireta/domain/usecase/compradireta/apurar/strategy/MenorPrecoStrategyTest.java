@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import br.com.desafio.compradireta.domain.constant.CriterioJulgamento;
 import br.com.desafio.compradireta.domain.entity.entities.Fornecedor;
 import br.com.desafio.compradireta.domain.entity.entities.Proposta;
-import br.com.desafio.compradireta.domain.exception.NegocioException;
 
 class MenorPrecoStrategyTest {
 
@@ -46,14 +46,7 @@ class MenorPrecoStrategyTest {
     }
 
     @Test
-    void deveLancarNegocioExceptionQuandoListaDePropostasEstiverVaziaOuNulaTest() {
-        assertThrows(NegocioException.class, () -> strategy.apurar(List.of()));
-        assertThrows(NegocioException.class, () -> strategy.apurar(null));
-    }
-
-    @Test
-    void deveLancarNegocioExceptionQuandoNenhumaPropostaTiverValorPropostoTest() {
-        Proposta p1 = Proposta.builder().id(1L).valorProposto(null).build();
-        assertThrows(NegocioException.class, () -> strategy.apurar(List.of(p1)));
+    void deveLancarNoSuchElementExceptionQuandoListaVaziaTest() {
+        assertThrows(NoSuchElementException.class, () -> strategy.apurar(List.of()));
     }
 }

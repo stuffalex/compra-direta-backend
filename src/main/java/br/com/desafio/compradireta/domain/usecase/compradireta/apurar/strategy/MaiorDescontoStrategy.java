@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.desafio.compradireta.domain.constant.CriterioJulgamento;
 import br.com.desafio.compradireta.domain.entity.entities.Proposta;
-import br.com.desafio.compradireta.domain.exception.NegocioException;
 
 public class MaiorDescontoStrategy implements IApuracaoVencedorStrategy {
 
@@ -16,13 +15,8 @@ public class MaiorDescontoStrategy implements IApuracaoVencedorStrategy {
 
     @Override
     public Proposta apurar(List<Proposta> propostas) {
-        if (propostas == null || propostas.isEmpty()) {
-            throw new NegocioException("Não é possível apurar o vencedor sem propostas válidas");
-        }
-
         return propostas.stream()
-                .filter(p -> p.getPercentualDesconto() != null)
                 .max(Comparator.comparing(Proposta::getPercentualDesconto))
-                .orElseThrow(() -> new NegocioException("Nenhuma proposta válida com desconto informado para apuração por maior desconto"));
+                .orElseThrow();
     }
 }

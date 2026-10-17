@@ -49,10 +49,8 @@ public class ApurarVencedorCompraDiretaUseCase {
         Validator.isTrue(!propostas.isEmpty(), "Não é possível apurar o vencedor sem propostas registradas");
 
         IApuracaoVencedorStrategy strategy = strategies.get(compraDireta.getCriterioJulgamento());
-        if (strategy == null) {
-            throw new NegocioException("Estratégia de apuração não encontrada para o critério: "
-                    + compraDireta.getCriterioJulgamento());
-        }
+        Validator.notNull(strategy, "Estratégia de apuração não encontrada para o critério: "
+                + compraDireta.getCriterioJulgamento());
 
         Proposta propostaVencedora = strategy.apurar(propostas);
 

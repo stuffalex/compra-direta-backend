@@ -15,7 +15,7 @@ public class InexigibilidadeStrategy implements IApuracaoVencedorStrategy {
 
     @Override
     public Proposta apurar(List<Proposta> propostas) {
-        Validator.isTrue(propostas != null && propostas.size() == 1,
+        Validator.isTrue(propostas.size() == 1,
                 "Para compras com critério NÃO SE APLICA (inexigibilidade), deve haver exatamente 1 proposta registrada");
 
         return propostas.get(0);
