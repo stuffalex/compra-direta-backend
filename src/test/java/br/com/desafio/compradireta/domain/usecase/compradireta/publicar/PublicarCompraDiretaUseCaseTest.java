@@ -3,6 +3,8 @@ package br.com.desafio.compradireta.domain.usecase.compradireta.publicar;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import br.com.desafio.compradireta.domain.entity.entities.Fornecedor;
 import br.com.desafio.compradireta.domain.exception.NegocioException;
 import br.com.desafio.compradireta.domain.exception.RecursoNaoEncontradoException;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.ICompraDiretaDataProvider;
+import br.com.desafio.compradireta.domain.interfaces.event.INotificacaoPublicacaoProducer;
 import br.com.desafio.compradireta.domain.usecase.compradireta.dto.CompraDiretaResumoOutput;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,17 +32,21 @@ class PublicarCompraDiretaUseCaseTest {
     @Mock
     private ICompraDiretaDataProvider compraDiretaDataProvider;
 
+    @Mock
+    private INotificacaoPublicacaoProducer notificacaoPublicacaoProducer;
+
     private PublicarCompraDiretaUseCase publicarCompraDiretaUseCase;
 
     @BeforeEach
     void setUp() {
         publicarCompraDiretaUseCase = PublicarCompraDiretaUseCase.builder()
                 .compraDiretaDataProvider(compraDiretaDataProvider)
+                .notificacaoPublicacaoProducer(notificacaoPublicacaoProducer)
                 .build();
     }
 
     @Test
-    void devePublicarCompraDiretaQuandoCompraEmRascunhoTest() {
+    void devePublicarCompraDiretaEDispararEventoDeNotificacaoTest() {
         Fornecedor fornecedor = Fornecedor.builder().id(1L).razaoSocial("Alpha").email("alpha@teste.com").build();
         CompraDireta compraDireta = compraDiretaEmRascunho(fornecedor);
         when(compraDiretaDataProvider.buscarPorId(10L)).thenReturn(Optional.of(compraDireta));
@@ -48,6 +55,10 @@ class PublicarCompraDiretaUseCaseTest {
         CompraDiretaResumoOutput output = publicarCompraDiretaUseCase.executar(10L);
 
         assertEquals(StatusCompraDireta.PUBLICADA, output.getStatus());
+        verify(notificacaoPublicacaoProducer).publicar(argThat(event ->
+                event.getCompraDiretaId().equals(10L)
+                        && "CD-0001/2026".equals(event.getNumero())
+                        && event.getFornecedoresConvidadosIds().contains(1L)));
     }
 
     @Test
