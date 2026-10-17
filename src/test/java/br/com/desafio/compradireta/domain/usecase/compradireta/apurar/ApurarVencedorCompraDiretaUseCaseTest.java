@@ -27,6 +27,9 @@ import br.com.desafio.compradireta.domain.exception.NegocioException;
 import br.com.desafio.compradireta.domain.exception.RecursoNaoEncontradoException;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.ICompraDiretaDataProvider;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IPropostaDataProvider;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.strategy.InexigibilidadeStrategy;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.strategy.MaiorDescontoStrategy;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.strategy.MenorPrecoStrategy;
 import br.com.desafio.compradireta.domain.usecase.compradireta.dto.CompraDiretaResumoOutput;
 
 @ExtendWith(MockitoExtension.class)

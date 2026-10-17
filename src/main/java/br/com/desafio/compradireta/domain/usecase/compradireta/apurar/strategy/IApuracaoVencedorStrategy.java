@@ -1,4 +1,4 @@
-package br.com.desafio.compradireta.domain.usecase.compradireta.apurar;
+package br.com.desafio.compradireta.domain.usecase.compradireta.apurar.strategy;
 
 import java.util.List;
 

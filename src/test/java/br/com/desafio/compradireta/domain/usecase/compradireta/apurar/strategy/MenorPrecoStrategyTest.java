@@ -1,4 +1,4 @@
-package br.com.desafio.compradireta.domain.usecase.compradireta.apurar;
+package br.com.desafio.compradireta.domain.usecase.compradireta.apurar.strategy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
