@@ -27,6 +27,13 @@ spring:
     port: 5672
     username: guest
     password: guest
+    topology:
+      exchange: compra-direta.exchange
+      routing-key: compra-direta.publicada
+      queue: compra-direta.publicada.notificacao.queue
+      dlx: compra-direta.dlx
+      dlq-routing-key: compra-direta.publicada.dlq
+      dlq: compra-direta.publicada.notificacao.dlq
 
   web:
     cors:
@@ -38,6 +45,3 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-# TODO (DESAFIO - RabbitMQ): defina aqui as propriedades da sua topologia (exchange, routing key,
-# filas, DLQ) e leia-as via uma classe de propriedades de configuração (veja o padrão usado
-# em outras configurações do projeto).
