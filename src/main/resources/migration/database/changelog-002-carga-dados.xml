@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- unidade_compradora: ids 1, 2, 3 (ordem de inserção) -->
+    <changeSet id="001-carga-unidade-compradora" author="desafio">
+        <insert tableName="unidade_compradora">
+            <column name="nome" value="Secretaria de Administração"/>
+            <column name="codigo" value="SEC-ADM"/>
+        </insert>
+        <insert tableName="unidade_compradora">
+            <column name="nome" value="Secretaria de Saúde"/>
+            <column name="codigo" value="SEC-SAU"/>
+        </insert>
+        <insert tableName="unidade_compradora">
+            <column name="nome" value="Secretaria de Educação"/>
+            <column name="codigo" value="SEC-EDU"/>
+        </insert>
+    </changeSet>
+
+    <!-- categoria_compra: ids 1, 2, 3, 4 (ordem de inserção) -->
+    <changeSet id="002-carga-categoria-compra" author="desafio">
+        <insert tableName="categoria_compra">
+            <column name="nome" value="Material de Escritório"/>
+        </insert>
+        <insert tableName="categoria_compra">
+            <column name="nome" value="Serviços de Manutenção"/>
+        </insert>
+        <insert tableName="categoria_compra">
+            <column name="nome" value="Equipamentos de Informática"/>
+        </insert>
+        <insert tableName="categoria_compra">
+            <column name="nome" value="Material de Limpeza"/>
+        </insert>
+    </changeSet>
+
+    <!-- fornecedor: ids 1 a 8 (ordem de inserção) -->
+    <changeSet id="003-carga-fornecedor" author="desafio">
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Alpha Suprimentos Ltda"/>
+            <column name="cpf_cnpj" value="12.345.678/0001-90"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="contato@alphasuprimentos.com.br"/>
+            <column name="telefone" value="(11) 4002-8900"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Beta Comércio e Serviços EIRELI"/>
+            <column name="cpf_cnpj" value="23.456.789/0001-01"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="vendas@betacomercio.com.br"/>
+            <column name="telefone" value="(11) 4002-8901"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Gamma Tecnologia S.A."/>
+            <column name="cpf_cnpj" value="34.567.890/0001-12"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="comercial@gammatec.com.br"/>
+            <column name="telefone" value="(11) 4002-8902"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="João da Silva Manutenção"/>
+            <column name="cpf_cnpj" value="123.456.789-00"/>
+            <column name="tipo_fornecedor" value="PESSOA_FISICA"/>
+            <column name="email" value="joao.silva@email.com"/>
+            <column name="telefone" value="(11) 98888-1111"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Maria Oliveira Consultoria"/>
+            <column name="cpf_cnpj" value="234.567.890-11"/>
+            <column name="tipo_fornecedor" value="PESSOA_FISICA"/>
+            <column name="email" value="maria.oliveira@email.com"/>
+            <column name="telefone" value="(11) 98888-2222"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Pedro Santos ME"/>
+            <column name="cpf_cnpj" value="45.678.901/0001-23"/>
+            <column name="tipo_fornecedor" value="MEI"/>
+            <column name="email" value="pedro.santos@email.com"/>
+            <column name="telefone" value="(11) 98888-3333"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Ana Costa Serviços MEI"/>
+            <column name="cpf_cnpj" value="56.789.012/0001-34"/>
+            <column name="tipo_fornecedor" value="MEI"/>
+            <column name="email" value="ana.costa@email.com"/>
+            <column name="telefone" value="(11) 98888-4444"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Cooperativa dos Fornecedores Unidos"/>
+            <column name="cpf_cnpj" value="67.890.123/0001-45"/>
+            <column name="tipo_fornecedor" value="COOPERATIVA"/>
+            <column name="email" value="contato@coopfornecedores.com.br"/>
+            <column name="telefone" value="(11) 4002-8903"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <!-- compra_direta: ids 1 e 2 (ordem de inserção) -->
+    <changeSet id="004-carga-compra-direta" author="desafio">
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0001/2026"/>
+            <column name="objeto" value="Aquisição de material de escritório para a Secretaria de Administração"/>
+            <column name="justificativa" value="Reposição de estoque para o 4º trimestre de 2026"/>
+            <column name="modalidade" value="DISPENSA_DE_LICITACAO"/>
+            <column name="criterio_julgamento" value="MENOR_PRECO"/>
+            <column name="unidade_compradora_id" valueNumeric="1"/>
+            <column name="categoria_compra_id" valueNumeric="1"/>
+            <column name="status" value="RASCUNHO"/>
+            <column name="data_abertura" valueDate="2026-10-10"/>
+            <column name="data_limite_propostas" valueDate="2026-10-25"/>
+        </insert>
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0002/2026"/>
+            <column name="objeto" value="Contratação de empresa especializada para manutenção preventiva de equipamento médico exclusivo"/>
+            <column name="justificativa" value="Fornecedor exclusivo autorizado pelo fabricante do equipamento"/>
+            <column name="modalidade" value="INEXIGIBILIDADE"/>
+            <column name="criterio_julgamento" value="NAO_SE_APLICA"/>
+            <column name="unidade_compradora_id" valueNumeric="2"/>
+            <column name="categoria_compra_id" valueNumeric="2"/>
+            <column name="status" value="RASCUNHO"/>
+            <column name="data_abertura" valueDate="2026-10-12"/>
+            <column name="data_limite_propostas" valueDate="2026-10-22"/>
+        </insert>
+    </changeSet>
+
+    <!-- item_compra_direta: vinculados às compras acima -->
+    <changeSet id="005-carga-item-compra-direta" author="desafio">
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="1"/>
+            <column name="descricao" value="Papel A4 (resma 500 folhas)"/>
+            <column name="unidade_medida" value="RESMA"/>
+            <column name="quantidade" valueNumeric="100"/>
+            <column name="valor_unitario_estimado" valueNumeric="24.90"/>
+        </insert>
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="1"/>
+            <column name="descricao" value="Caneta esferográfica azul"/>
+            <column name="unidade_medida" value="CAIXA"/>
+            <column name="quantidade" valueNumeric="50"/>
+            <column name="valor_unitario_estimado" valueNumeric="18.50"/>
+        </insert>
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="2"/>
+            <column name="descricao" value="Manutenção preventiva anual - equipamento XRAY-200"/>
+            <column name="unidade_medida" value="SERVICO"/>
+            <column name="quantidade" valueNumeric="1"/>
+            <column name="valor_unitario_estimado" valueNumeric="8500.00"/>
+        </insert>
+    </changeSet>
+
+    <!-- compra_direta_fornecedor: convites enviados -->
+    <changeSet id="006-carga-compra-direta-fornecedor" author="desafio">
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="1"/>
+            <column name="fornecedor_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="1"/>
+            <column name="fornecedor_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="1"/>
+            <column name="fornecedor_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="2"/>
+            <column name="fornecedor_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

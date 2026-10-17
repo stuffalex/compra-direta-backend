@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-criar-tabela-unidade-compradora" author="desafio">
+        <createTable tableName="unidade_compradora">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="codigo" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_unidade_compradora_codigo"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="002-criar-tabela-categoria-compra" author="desafio">
+        <createTable tableName="categoria_compra">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003-criar-tabela-fornecedor" author="desafio">
+        <createTable tableName="fornecedor">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="razao_social" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cpf_cnpj" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_fornecedor_cpf_cnpj"/>
+            </column>
+            <column name="tipo_fornecedor" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="telefone" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ativo" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004-criar-tabela-compra-direta" author="desafio">
+        <createTable tableName="compra_direta">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="numero" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_compra_direta_numero"/>
+            </column>
+            <column name="objeto" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="justificativa" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modalidade" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="criterio_julgamento" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unidade_compradora_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="categoria_compra_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_abertura" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_limite_propostas" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fornecedor_vencedor_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="data_homologacao" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="motivo_cancelamento" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="compra_direta"
+                baseColumnNames="unidade_compradora_id"
+                constraintName="fk_compra_direta_unidade_compradora"
+                referencedTableName="unidade_compradora"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="compra_direta"
+                baseColumnNames="categoria_compra_id"
+                constraintName="fk_compra_direta_categoria_compra"
+                referencedTableName="categoria_compra"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="compra_direta"
+                baseColumnNames="fornecedor_vencedor_id"
+                constraintName="fk_compra_direta_fornecedor_vencedor"
+                referencedTableName="fornecedor"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="005-criar-tabela-item-compra-direta" author="desafio">
+        <createTable tableName="item_compra_direta">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="compra_direta_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descricao" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unidade_medida" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantidade" type="NUMERIC(15,4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_unitario_estimado" type="NUMERIC(15,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="item_compra_direta"
+                baseColumnNames="compra_direta_id"
+                constraintName="fk_item_compra_direta_compra_direta"
+                referencedTableName="compra_direta"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="006-criar-tabela-compra-direta-fornecedor" author="desafio">
+        <createTable tableName="compra_direta_fornecedor">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="compra_direta_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fornecedor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_convite" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="compra_direta_fornecedor"
+                baseColumnNames="compra_direta_id"
+                constraintName="fk_compra_direta_fornecedor_compra_direta"
+                referencedTableName="compra_direta"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="compra_direta_fornecedor"
+                baseColumnNames="fornecedor_id"
+                constraintName="fk_compra_direta_fornecedor_fornecedor"
+                referencedTableName="fornecedor"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="007-criar-tabela-proposta" author="desafio">
+        <createTable tableName="proposta">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="compra_direta_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fornecedor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_proposto" type="NUMERIC(15,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="percentual_desconto" type="NUMERIC(5,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="prazo_entrega_dias" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_envio" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="proposta"
+                baseColumnNames="compra_direta_id"
+                constraintName="fk_proposta_compra_direta"
+                referencedTableName="compra_direta"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="proposta"
+                baseColumnNames="fornecedor_id"
+                constraintName="fk_proposta_fornecedor"
+                referencedTableName="fornecedor"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="008-criar-tabela-notificacao-fornecedor" author="desafio">
+        <createTable tableName="notificacao_fornecedor">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="compra_direta_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fornecedor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_envio" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="notificacao_fornecedor"
+                baseColumnNames="compra_direta_id"
+                constraintName="fk_notificacao_fornecedor_compra_direta"
+                referencedTableName="compra_direta"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="notificacao_fornecedor"
+                baseColumnNames="fornecedor_id"
+                constraintName="fk_notificacao_fornecedor_fornecedor"
+                referencedTableName="fornecedor"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

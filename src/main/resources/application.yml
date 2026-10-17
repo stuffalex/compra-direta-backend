@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: compra-direta-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/compra_direta
+    username: compra_direta
+    password: compra_direta
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:migration/database/master.xml
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  web:
+    cors:
+      allowed-origins: "*"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# TODO (DESAFIO - RabbitMQ): defina aqui as propriedades da sua topologia (exchange, routing key,
+# filas, DLQ) e leia-as via uma classe de propriedades de configuração (veja o padrão usado
+# em outras configurações do projeto).
