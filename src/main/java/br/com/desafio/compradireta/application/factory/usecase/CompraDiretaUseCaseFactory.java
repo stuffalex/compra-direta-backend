@@ -1,5 +1,7 @@
 package br.com.desafio.compradireta.application.factory.usecase;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +11,10 @@ import br.com.desafio.compradireta.domain.interfaces.dataprovider.IFornecedorDat
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IPropostaDataProvider;
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IUnidadeCompradoraDataProvider;
 import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.ApurarVencedorCompraDiretaUseCase;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.IApuracaoVencedorStrategy;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.InexigibilidadeStrategy;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.MaiorDescontoStrategy;
+import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.MenorPrecoStrategy;
 import br.com.desafio.compradireta.domain.usecase.compradireta.atualizar.AtualizarCompraDiretaUseCase;
 import br.com.desafio.compradireta.domain.usecase.compradireta.buscar.BuscarCompraDiretaUseCase;
 import br.com.desafio.compradireta.domain.usecase.compradireta.cancelar.CancelarCompraDiretaUseCase;
@@ -81,12 +87,29 @@ public class CompraDiretaUseCaseFactory {
     }
 
     @Bean
+    public MenorPrecoStrategy menorPrecoStrategy() {
+        return new MenorPrecoStrategy();
+    }
+
+    @Bean
+    public MaiorDescontoStrategy maiorDescontoStrategy() {
+        return new MaiorDescontoStrategy();
+    }
+
+    @Bean
+    public InexigibilidadeStrategy inexigibilidadeStrategy() {
+        return new InexigibilidadeStrategy();
+    }
+
+    @Bean
     public ApurarVencedorCompraDiretaUseCase apurarVencedorCompraDiretaUseCase(
             ICompraDiretaDataProvider compraDiretaDataProvider,
-            IPropostaDataProvider propostaDataProvider) {
+            IPropostaDataProvider propostaDataProvider,
+            List<IApuracaoVencedorStrategy> strategies) {
         return ApurarVencedorCompraDiretaUseCase.builder()
                 .compraDiretaDataProvider(compraDiretaDataProvider)
                 .propostaDataProvider(propostaDataProvider)
+                .strategies(strategies)
                 .build();
     }
 }
