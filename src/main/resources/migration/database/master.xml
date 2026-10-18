@@ -8,5 +8,6 @@
     <include file="changelog-001-estrutura.xml" relativeToChangelogFile="true"/>
     <include file="changelog-002-carga-dados.xml" relativeToChangelogFile="true"/>
     <include file="changelog-003-seed-demonstracao.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-004-tabela-outbox.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

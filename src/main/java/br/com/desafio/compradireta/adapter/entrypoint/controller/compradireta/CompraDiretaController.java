@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.constraints.NotNull;
+import br.com.desafio.compradireta.domain.pagination.Paginacao;
 
 import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.ApurarVencedorCompraDiretaUseCase;
 import br.com.desafio.compradireta.domain.usecase.compradireta.atualizar.AtualizarCompraDiretaInput;
@@ -58,8 +62,14 @@ public class CompraDiretaController {
     }
 
     @GetMapping
-    @Operation(summary = "Lista todas as compras diretas")
-    public ResponseEntity<List<CompraDiretaResumoOutput>> listar() {
+    @Operation(summary = "Lista compras diretas com suporte opcional a paginação")
+    public ResponseEntity<?> listar(
+            @RequestParam(required = false) @NotNull Integer page,
+            @RequestParam(required = false) @NotNull Integer size) {
+        if (page != null || size != null) {
+            Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
+            return ResponseEntity.ok(listarComprasDiretasUseCase.executar(paginacao));
+        }
         return ResponseEntity.ok(listarComprasDiretasUseCase.executar());
     }
 
@@ -106,8 +116,15 @@ public class CompraDiretaController {
     }
 
     @GetMapping("/{id}/propostas")
-    @Operation(summary = "Lista as propostas recebidas para a compra direta")
-    public ResponseEntity<List<PropostaOutput>> listarPropostas(@PathVariable Long id) {
+    @Operation(summary = "Lista as propostas recebidas para a compra direta com suporte opcional a paginação")
+    public ResponseEntity<?> listarPropostas(
+            @PathVariable Long id,
+            @RequestParam(required = false) @NotNull Integer page,
+            @RequestParam(required = false) @NotNull Integer size) {
+        if (page != null || size != null) {
+            Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
+            return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id, paginacao));
+        }
         return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id));
     }
 

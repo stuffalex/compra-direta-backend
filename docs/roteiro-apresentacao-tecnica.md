@@ -140,10 +140,10 @@ Nesta fase, destaque a maturidade de engenharia e as escolhas de design:
    * Configuração de Direct Exchange durável conectada a uma Dead Letter Exchange (`compra-direta.dlx`) e Dead Letter Queue (`compra-direta.publicada.notificacao.dlq`).
    * Configuração de `default-requeue-rejected: false` para evitar consumo em loop (*poison pill*): mensagens com erro irrecuperável são despachadas automaticamente para a DLQ para auditoria.
 5. **Qualidade e Cobertura de Testes Unitários:**
-   * Suíte com **41 testes unitários** automatizados com JUnit 5 e Mockito seguindo o padrão AAA (Arrange, Act, Assert).
-   * 100% de sucesso sem depender de bancos externos ou brokers para validação de regras de negócio.
+   * Suíte com **56 testes unitários** automatizados com JUnit 5 e Mockito seguindo o padrão AAA (Arrange, Act, Assert).
+   * 100% de sucesso sem depender de bancos externos ou brokers para validação de regras de negócio, cobrindo domínios, estratégias, outbox worker, correlation ID e paginação.
 6. **Fluxo de Trabalho Git e Commits Atômicos:**
-   * Branches isoladas criadas a partir da branch default (`alexya/notificacao-rabbitmq`), sem commits diretos na `main`.
+   * Branches isoladas criadas a partir da branch default (`alexya/melhorias-outbox-tracing-paginacao`), sem commits diretos na `main`.
    * Commits atômicos no padrão Conventional Commits (`feat`, `test`, `chore`, `refactor`).
 
 ---
@@ -161,17 +161,21 @@ Em sistemas distribuídos de mensageria, a garantia de entrega da rede é **At-L
 
 ---
 
-## 6. Oportunidades de Melhoria e Diferenciais (Pitch Técnico)
+## 6. Diferenciais Implementados na Aplicação (Destaque Técnico)
 
-Ao ser questionada sobre potenciais melhorias futuras para a aplicação, mencione:
+Você pode demonstrar que o projeto foi além do básico e já implementou as 3 melhorias de padrão corporativo:
 
-1. **Transactional Outbox Pattern:**
-   * *Diagnóstico:* Atualmente, a compra direta é persistida no banco e em seguida a mensagem é disparada ao RabbitMQ. Se o broker estiver fora do ar exatamente no milissegundo pós-commit do banco, a notificação não é enviada (*Dual Write Problem*).
-   * *Solução:* Gravar o evento na tabela de *outbox* na mesma transação atômica do banco de dados e ter um worker (via Debezium/CDC ou polling) publicando no RabbitMQ com garantia transacional.
-2. **Observabilidade e Tracing Distribuído:**
-   * Implementação de correlation-id / trace-id via **Micrometer Tracing** ou **OpenTelemetry**, propagando o cabeçalho no envelope AMQP para correlacionar o log da requisição HTTP de publicação com o log de consumo do listener.
-3. **Paginação nos Endpoints de Consulta:**
-   * Inclusão de `Pageable` do Spring Data nos endpoints de listagem de compras e de propostas para garantir escalabilidade sob grandes volumes.
+1. **Transactional Outbox Pattern (Implementado):**
+   * *Problema Resolvido:* Dual Write Problem. A compra e o evento de publicação são gravados na tabela `outbox_evento` na mesma transação atômica do PostgreSQL.
+   * *Despacho Assíncrono:* O componente `OutboxRelayWorker` consulta eventos com status `PENDENTE` a cada 2 segundos, despacha para o RabbitMQ e marca como `PROCESSADO` (com política de retentativas e tolerância a falhas).
+2. **Observabilidade e Tracing Distribuído com Correlation ID (Implementado):**
+   * O `CorrelationIdFilter` intercepta requisições HTTP, propaga `X-Correlation-ID` no `MDC` e injeta no cabeçalho de resposta.
+   * O `OutboxRelayWorker` e o produtor AMQP propagam o correlation ID nos headers da mensagem RabbitMQ.
+   * O `NotificacaoPublicacaoListener` extrai o header e injeta no MDC do consumidor, permitindo correlacionar os logs do clique HTTP até o processamento da notificação com precisão cirúrgica.
+3. **Paginação com Pageable e Resiliência no Frontend (Implementado):**
+   * Endpoints `GET /api/compras-diretas` e `GET /api/compras-diretas/{id}/propostas` suportam parâmetros `page` e `size` com validação `@NotNull` e `@Min`.
+   * O domínio utiliza `Paginacao` e `Pagina<T>` puras sem dependência de classes do Spring Data, preservando a Clean Architecture.
+   * O frontend Vuex foi atualizado para ser resiliente e lidar tanto com arrays diretos quanto com payloads paginados.
 
 ---
 
