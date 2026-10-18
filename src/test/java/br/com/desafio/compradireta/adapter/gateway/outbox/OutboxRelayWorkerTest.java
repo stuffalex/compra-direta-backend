@@ -45,7 +45,7 @@ class OutboxRelayWorkerTest {
     @BeforeEach
     void setUp() {
         properties = new RabbitMQProperties();
-        properties.setExchange("compra-direta.exchange");
+        properties.setExchange("compra-direta.eventos");
         properties.setRoutingKey("compra-direta.publicada");
         objectMapper = new ObjectMapper();
 
@@ -78,7 +78,7 @@ class OutboxRelayWorkerTest {
 
         worker.processarEventosPendentes();
 
-        verify(rabbitTemplate).convertAndSend(eq("compra-direta.exchange"), eq("compra-direta.publicada"), any(CompraPublicadaEvent.class), any(MessagePostProcessor.class));
+        verify(rabbitTemplate).convertAndSend(eq("compra-direta.eventos"), eq("compra-direta.publicada"), any(CompraPublicadaEvent.class), any(MessagePostProcessor.class));
         assertEquals(StatusOutbox.PROCESSADO, outboxEvento.getStatus());
         assertNotNull(outboxEvento.getProcessadoEm());
         verify(outboxRepository).save(outboxEvento);
@@ -107,7 +107,7 @@ class OutboxRelayWorkerTest {
                 .thenReturn(List.of(outboxEvento));
 
         doThrow(new RuntimeException("RabbitMQ connection refused"))
-                .when(rabbitTemplate).convertAndSend(eq("compra-direta.exchange"), eq("compra-direta.publicada"), any(CompraPublicadaEvent.class), any(MessagePostProcessor.class));
+                .when(rabbitTemplate).convertAndSend(eq("compra-direta.eventos"), eq("compra-direta.publicada"), any(CompraPublicadaEvent.class), any(MessagePostProcessor.class));
 
         worker.processarEventosPendentes();
 
