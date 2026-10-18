@@ -32,12 +32,12 @@ spring:
     username: guest
     password: guest
     topology:
-      exchange: compra-direta.exchange
+      exchange: compra-direta.eventos
       routing-key: compra-direta.publicada
-      queue: compra-direta.publicada.notificacao.queue
-      dlx: compra-direta.dlx
-      dlq-routing-key: compra-direta.publicada.dlq
-      dlq: compra-direta.publicada.notificacao.dlq
+      queue: compra-direta.publicada.notificar-fornecedores
+      dlx: compra-direta.eventos.dlx
+      dlq-routing-key: compra-direta.publicada.notificar-fornecedores.dlq
+      dlq: compra-direta.publicada.notificar-fornecedores.dlq
     listener:
       simple:
         default-requeue-rejected: false

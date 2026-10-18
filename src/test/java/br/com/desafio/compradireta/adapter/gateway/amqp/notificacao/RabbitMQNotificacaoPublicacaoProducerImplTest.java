@@ -36,7 +36,7 @@ class RabbitMQNotificacaoPublicacaoProducerImplTest {
     @BeforeEach
     void setUp() {
         properties = new RabbitMQProperties();
-        properties.setExchange("compra-direta.exchange");
+        properties.setExchange("compra-direta.eventos");
         properties.setRoutingKey("compra-direta.publicada");
 
         producer = new RabbitMQNotificacaoPublicacaoProducerImpl(rabbitTemplate, properties);
@@ -57,7 +57,7 @@ class RabbitMQNotificacaoPublicacaoProducerImplTest {
 
         producer.publicar(evento);
 
-        verify(rabbitTemplate).convertAndSend(eq("compra-direta.exchange"), eq("compra-direta.publicada"), eq(evento), any(MessagePostProcessor.class));
+        verify(rabbitTemplate).convertAndSend(eq("compra-direta.eventos"), eq("compra-direta.publicada"), eq(evento), any(MessagePostProcessor.class));
     }
 
     @Test
@@ -75,7 +75,7 @@ class RabbitMQNotificacaoPublicacaoProducerImplTest {
 
         producer.publicar(evento);
 
-        verify(rabbitTemplate).convertAndSend(eq("compra-direta.exchange"), eq("compra-direta.publicada"), eq(evento), captor.capture());
+        verify(rabbitTemplate).convertAndSend(eq("compra-direta.eventos"), eq("compra-direta.publicada"), eq(evento), captor.capture());
 
         Message message = new Message(new byte[0], new MessageProperties());
         Message processedMessage = captor.getValue().postProcessMessage(message);

@@ -78,7 +78,7 @@ Para facilitar os testes funcionais e a verificação das regras de negócio, o 
 
 ### 4.2. Comunicação Assíncrona e Resiliência (RabbitMQ)
 * **Desacoplamento Temporal:** A publicação da compra não trava a requisição HTTP aguardando a geração e o envio individual das notificações para cada fornecedor. O evento é publicado na fila e processado de forma assíncrona.
-* **Topologia com DLQ:** A fila principal (`compra-direta.publicada.notificacao.queue`) é vinculada a uma Dead Letter Exchange (`compra-direta.dlx`) e Dead Letter Queue (`compra-direta.publicada.notificacao.dlq`).
+* **Topologia com DLQ:** A exchange de eventos (`compra-direta.eventos`) direciona as mensagens para a fila principal (`compra-direta.publicada.notificar-fornecedores`). Em falhas não tratadas, as mensagens são encaminhadas via Dead Letter Exchange (`compra-direta.eventos.dlx`) para a fila de auditoria (`compra-direta.publicada.notificar-fornecedores.dlq`).
 * **Prevenção de Loop de Erro (*Poison Pill*):** O listener está configurado com `default-requeue-rejected: false`. Se uma mensagem sofrer um erro não recuperável no processamento, ela é roteada para a DLQ para posterior análise, evitando consumo infinito e esgotamento de recursos.
 * **Idempotência no Consumidor:** Em redes distribuídas com entrega *at-least-once*, mensagens podem ser reenviadas em falhas transitórias de conexão. O consumidor valida `existePorCompraDiretaEFornecedor` antes de persistir a notificação, prevenindo registros duplicados no banco.
 
