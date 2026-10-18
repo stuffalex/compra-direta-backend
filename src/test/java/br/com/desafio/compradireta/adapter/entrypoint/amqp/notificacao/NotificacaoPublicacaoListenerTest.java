@@ -1,5 +1,7 @@
 package br.com.desafio.compradireta.adapter.entrypoint.amqp.notificacao;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
@@ -9,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.MDC;
 
+import br.com.desafio.compradireta.adapter.entrypoint.filter.CorrelationIdFilter;
 import br.com.desafio.compradireta.domain.usecase.compradireta.publicar.event.CompraPublicadaEvent;
 import br.com.desafio.compradireta.domain.usecase.notificacao.publicar.NotificarFornecedoresPublicacaoUseCase;
 
@@ -31,6 +35,24 @@ class NotificacaoPublicacaoListenerTest {
                 .build();
 
         listener.processar(evento);
+
+        verify(notificarFornecedoresPublicacaoUseCase).executar(10L);
+    }
+
+    @Test
+    void devePropagarCorrelationIdNoMdcDuranteProcessamentoTest() {
+        String correlationIdEsperado = "corr-listener-test-456";
+        CompraPublicadaEvent evento = CompraPublicadaEvent.builder()
+                .compraDiretaId(10L)
+                .numero("CD-0001/2026")
+                .build();
+
+        doAnswer(invocation -> {
+            assertEquals(correlationIdEsperado, MDC.get(CorrelationIdFilter.CORRELATION_ID_MDC_KEY));
+            return null;
+        }).when(notificarFornecedoresPublicacaoUseCase).executar(10L);
+
+        listener.processar(evento, correlationIdEsperado);
 
         verify(notificarFornecedoresPublicacaoUseCase).executar(10L);
     }
