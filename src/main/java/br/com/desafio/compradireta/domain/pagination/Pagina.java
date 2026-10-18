@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Pagina<T> {
 
+    @NotNull(message = "O conteúdo da página não pode ser nulo")
     @Builder.Default
     private List<T> content = Collections.emptyList();
     private long totalElements;
