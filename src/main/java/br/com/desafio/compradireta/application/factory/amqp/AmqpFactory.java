@@ -1,11 +1,12 @@
 package br.com.desafio.compradireta.application.factory.amqp;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.desafio.compradireta.adapter.gateway.amqp.notificacao.RabbitMQNotificacaoPublicacaoProducerImpl;
-import br.com.desafio.compradireta.application.config.RabbitMQProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.desafio.compradireta.adapter.gateway.outbox.OutboxJpaRepository;
+import br.com.desafio.compradireta.adapter.gateway.outbox.OutboxNotificacaoPublicacaoProducerImpl;
 import br.com.desafio.compradireta.domain.interfaces.event.INotificacaoPublicacaoProducer;
 
 @Configuration
@@ -13,8 +14,8 @@ public class AmqpFactory {
 
     @Bean
     public INotificacaoPublicacaoProducer notificacaoPublicacaoProducer(
-            RabbitTemplate rabbitTemplate,
-            RabbitMQProperties properties) {
-        return new RabbitMQNotificacaoPublicacaoProducerImpl(rabbitTemplate, properties);
+            OutboxJpaRepository outboxRepository,
+            ObjectMapper objectMapper) {
+        return new OutboxNotificacaoPublicacaoProducerImpl(outboxRepository, objectMapper);
     }
 }
