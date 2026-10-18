@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.IPropostaDataProvider;
+import br.com.desafio.compradireta.domain.pagination.Pagina;
+import br.com.desafio.compradireta.domain.pagination.Paginacao;
 import br.com.desafio.compradireta.domain.usecase.proposta.dto.PropostaOutput;
 import br.com.desafio.compradireta.domain.usecase.proposta.dto.PropostaOutputConverter;
 import lombok.Builder;
@@ -17,5 +19,10 @@ public class ListarPropostasPorCompraUseCase {
         return propostaDataProvider.listarPorCompraDireta(compraDiretaId).stream()
                 .map(PropostaOutputConverter::converter)
                 .collect(Collectors.toList());
+    }
+
+    public Pagina<PropostaOutput> executar(Long compraDiretaId, Paginacao paginacao) {
+        return propostaDataProvider.listarPorCompraDiretaPaginado(compraDiretaId, paginacao)
+                .map(PropostaOutputConverter::converter);
     }
 }

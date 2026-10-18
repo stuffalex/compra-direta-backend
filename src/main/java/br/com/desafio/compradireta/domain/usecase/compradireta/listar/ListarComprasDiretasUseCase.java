@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.desafio.compradireta.domain.interfaces.dataprovider.ICompraDiretaDataProvider;
+import br.com.desafio.compradireta.domain.pagination.Pagina;
+import br.com.desafio.compradireta.domain.pagination.Paginacao;
 import br.com.desafio.compradireta.domain.usecase.compradireta.dto.CompraDiretaResumoOutput;
 import br.com.desafio.compradireta.domain.usecase.compradireta.dto.CompraDiretaResumoOutputConverter;
 import lombok.Builder;
@@ -17,5 +19,10 @@ public class ListarComprasDiretasUseCase {
         return compraDiretaDataProvider.listarTodas().stream()
                 .map(CompraDiretaResumoOutputConverter::converter)
                 .collect(Collectors.toList());
+    }
+
+    public Pagina<CompraDiretaResumoOutput> executar(Paginacao paginacao) {
+        return compraDiretaDataProvider.listarPaginado(paginacao)
+                .map(CompraDiretaResumoOutputConverter::converter);
     }
 }
