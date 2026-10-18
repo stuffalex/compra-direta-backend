@@ -18,6 +18,7 @@ import br.com.desafio.compradireta.domain.usecase.compradireta.cancelar.Cancelar
 import br.com.desafio.compradireta.domain.usecase.compradireta.criar.CriarCompraDiretaUseCase;
 import br.com.desafio.compradireta.domain.usecase.compradireta.listar.ListarComprasDiretasUseCase;
 import br.com.desafio.compradireta.domain.usecase.compradireta.publicar.PublicarCompraDiretaUseCase;
+import br.com.desafio.compradireta.domain.interfaces.event.INotificacaoPublicacaoProducer;
 import br.com.desafio.compradireta.domain.usecase.extended.compradireta.validarregras.IValidarRegrasCompraDiretaExtendedUseCase;
 
 @Configuration
@@ -70,9 +71,12 @@ public class CompraDiretaUseCaseFactory {
     }
 
     @Bean
-    public PublicarCompraDiretaUseCase publicarCompraDiretaUseCase(ICompraDiretaDataProvider compraDiretaDataProvider) {
+    public PublicarCompraDiretaUseCase publicarCompraDiretaUseCase(
+            ICompraDiretaDataProvider compraDiretaDataProvider,
+            INotificacaoPublicacaoProducer notificacaoPublicacaoProducer) {
         return PublicarCompraDiretaUseCase.builder()
                 .compraDiretaDataProvider(compraDiretaDataProvider)
+                .notificacaoPublicacaoProducer(notificacaoPublicacaoProducer)
                 .build();
     }
 

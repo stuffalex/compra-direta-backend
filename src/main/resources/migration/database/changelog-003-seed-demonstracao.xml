@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- 10 Novos Fornecedores (ids 9 a 18) -->
+    <changeSet id="001-carga-fornecedores-demonstracao" author="alexya">
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="TechCorp Soluções em TI Ltda"/>
+            <column name="cpf_cnpj" value="78.901.234/0001-56"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="contato@techcorp.com.br"/>
+            <column name="telefone" value="(11) 4002-8910"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="BioSaúde Distribuidora Hospitalar"/>
+            <column name="cpf_cnpj" value="89.012.345/0001-67"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="vendas@biosaude.com.br"/>
+            <column name="telefone" value="(11) 4002-8911"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="CyberShield Brasil Segurança Digital"/>
+            <column name="cpf_cnpj" value="90.123.456/0001-78"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="comercial@cybershield.com.br"/>
+            <column name="telefone" value="(11) 4002-8912"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="NetConnect Redes e Telecom"/>
+            <column name="cpf_cnpj" value="01.234.567/0001-89"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="projetos@netconnect.com.br"/>
+            <column name="telefone" value="(11) 4002-8913"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="FiberOptic Tecnologia em Cabos"/>
+            <column name="cpf_cnpj" value="12.345.670/0001-99"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="vendas@fiberoptic.com.br"/>
+            <column name="telefone" value="(11) 4002-8914"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="GlobalSwitch Equipamentos Eletrônicos"/>
+            <column name="cpf_cnpj" value="23.456.780/0001-02"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="suporte@globalswitch.com.br"/>
+            <column name="telefone" value="(11) 4002-8915"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Lucas Mendes Reformas e Reparos"/>
+            <column name="cpf_cnpj" value="345.678.901-22"/>
+            <column name="tipo_fornecedor" value="PESSOA_FISICA"/>
+            <column name="email" value="lucas.mendes@email.com"/>
+            <column name="telefone" value="(11) 97777-1111"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Camila Rocha Design e Papelaria"/>
+            <column name="cpf_cnpj" value="67.890.120/0001-44"/>
+            <column name="tipo_fornecedor" value="MEI"/>
+            <column name="email" value="camila.rocha@email.com"/>
+            <column name="telefone" value="(11) 97777-2222"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Soluções Integradas em Nuvem S.A."/>
+            <column name="cpf_cnpj" value="45.678.912/0001-35"/>
+            <column name="tipo_fornecedor" value="PESSOA_JURIDICA"/>
+            <column name="email" value="cloud@solucoesemnuvem.com.br"/>
+            <column name="telefone" value="(11) 4002-8916"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+        <insert tableName="fornecedor">
+            <column name="razao_social" value="Cooperativa Agroecológica e Suprimentos"/>
+            <column name="cpf_cnpj" value="56.789.023/0001-46"/>
+            <column name="tipo_fornecedor" value="COOPERATIVA"/>
+            <column name="email" value="atendimento@coopagro.com.br"/>
+            <column name="telefone" value="(11) 4002-8917"/>
+            <column name="ativo" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <!-- 4 Compras Diretas para Demonstração (ids 3 a 6) -->
+    <changeSet id="002-carga-compras-demonstracao" author="alexya">
+        <!-- Compra 3: Dispensa Menor Preço (Publicada, pronta para apuração) -->
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0003/2026"/>
+            <column name="objeto" value="Aquisição de licenças de software para virtualização de servidores"/>
+            <column name="justificativa" value="Modernização da infraestrutura do datacenter da Secretaria de Administração"/>
+            <column name="modalidade" value="DISPENSA_DE_LICITACAO"/>
+            <column name="criterio_julgamento" value="MENOR_PRECO"/>
+            <column name="unidade_compradora_id" valueNumeric="1"/>
+            <column name="categoria_compra_id" valueNumeric="3"/>
+            <column name="status" value="PUBLICADA"/>
+            <column name="data_abertura" valueDate="2026-10-15"/>
+            <column name="data_limite_propostas" valueDate="2026-10-30"/>
+        </insert>
+
+        <!-- Compra 4: Dispensa Maior Desconto (Publicada, pronta para apuração) -->
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0004/2026"/>
+            <column name="objeto" value="Aquisição de materiais de consumo médico-hospitalar da tabela oficial"/>
+            <column name="justificativa" value="Abastecimento trimestral da rede básica de saúde"/>
+            <column name="modalidade" value="DISPENSA_DE_LICITACAO"/>
+            <column name="criterio_julgamento" value="MAIOR_DESCONTO"/>
+            <column name="unidade_compradora_id" valueNumeric="2"/>
+            <column name="categoria_compra_id" valueNumeric="1"/>
+            <column name="status" value="PUBLICADA"/>
+            <column name="data_abertura" valueDate="2026-10-14"/>
+            <column name="data_limite_propostas" valueDate="2026-10-28"/>
+        </insert>
+
+        <!-- Compra 5: Inexigibilidade Não Se Aplica (Publicada, pronta para apuração/homologação direta) -->
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0005/2026"/>
+            <column name="objeto" value="Auditoria e resposta a incidentes críticos de segurança da informação"/>
+            <column name="justificativa" value="Notória especialização e exclusividade comprovada para infraestruturas críticas"/>
+            <column name="modalidade" value="INEXIGIBILIDADE"/>
+            <column name="criterio_julgamento" value="NAO_SE_APLICA"/>
+            <column name="unidade_compradora_id" valueNumeric="1"/>
+            <column name="categoria_compra_id" valueNumeric="2"/>
+            <column name="status" value="PUBLICADA"/>
+            <column name="data_abertura" valueDate="2026-10-16"/>
+            <column name="data_limite_propostas" valueDate="2026-10-26"/>
+        </insert>
+
+        <!-- Compra 6: Dispensa Menor Preço (RASCUNHO, pronta para demonstração ao vivo do RabbitMQ) -->
+        <insert tableName="compra_direta">
+            <column name="numero" value="CD-0006/2026"/>
+            <column name="objeto" value="Fornecimento de roteadores e switches gerenciáveis para escolas municipais"/>
+            <column name="justificativa" value="Expansão do programa de conectividade educacional"/>
+            <column name="modalidade" value="DISPENSA_DE_LICITACAO"/>
+            <column name="criterio_julgamento" value="MENOR_PRECO"/>
+            <column name="unidade_compradora_id" valueNumeric="3"/>
+            <column name="categoria_compra_id" valueNumeric="3"/>
+            <column name="status" value="RASCUNHO"/>
+            <column name="data_abertura" valueDate="2026-10-17"/>
+            <column name="data_limite_propostas" valueDate="2026-11-05"/>
+        </insert>
+    </changeSet>
+
+    <!-- Itens das Compras 3, 4, 5 e 6 -->
+    <changeSet id="003-carga-itens-demonstracao" author="alexya">
+        <!-- Itens Compra 3 -->
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="descricao" value="Licença Servidor Virtual Hyper-OS (anual)"/>
+            <column name="unidade_medida" value="UNIDADE"/>
+            <column name="quantidade" valueNumeric="5"/>
+            <column name="valor_unitario_estimado" valueNumeric="3000.00"/>
+        </insert>
+
+        <!-- Itens Compra 4 -->
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="descricao" value="Luvas de procedimentos em látex (caixa 100 un)"/>
+            <column name="unidade_medida" value="CAIXA"/>
+            <column name="quantidade" valueNumeric="200"/>
+            <column name="valor_unitario_estimado" valueNumeric="45.00"/>
+        </insert>
+
+        <!-- Itens Compra 5 -->
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="5"/>
+            <column name="descricao" value="Serviço de análise de vulnerabilidade e resposta a ameaças"/>
+            <column name="unidade_medida" value="SERVICO"/>
+            <column name="quantidade" valueNumeric="1"/>
+            <column name="valor_unitario_estimado" valueNumeric="28000.00"/>
+        </insert>
+
+        <!-- Itens Compra 6 -->
+        <insert tableName="item_compra_direta">
+            <column name="compra_direta_id" valueNumeric="6"/>
+            <column name="descricao" value="Switch Gerenciável 24 portas Gigabit L2"/>
+            <column name="unidade_medida" value="UNIDADE"/>
+            <column name="quantidade" valueNumeric="10"/>
+            <column name="valor_unitario_estimado" valueNumeric="1850.00"/>
+        </insert>
+    </changeSet>
+
+    <!-- Convites para as Compras 3, 4, 5 e 6 -->
+    <changeSet id="004-carga-convites-demonstracao" author="alexya">
+        <!-- Convites Compra 3 (4 fornecedores: 1, 2, 3, 9) -->
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="9"/>
+        </insert>
+
+        <!-- Convites Compra 4 (4 fornecedores: 5, 6, 7, 10) -->
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="10"/>
+        </insert>
+
+        <!-- Convites Compra 5 (1 fornecedor exclusivo: 11) -->
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="5"/>
+            <column name="fornecedor_id" valueNumeric="11"/>
+        </insert>
+
+        <!-- Convites Compra 6 (3 fornecedores: 12, 13, 14 - aguardando publicação) -->
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="6"/>
+            <column name="fornecedor_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="6"/>
+            <column name="fornecedor_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="compra_direta_fornecedor">
+            <column name="compra_direta_id" valueNumeric="6"/>
+            <column name="fornecedor_id" valueNumeric="14"/>
+        </insert>
+    </changeSet>
+
+    <!-- Propostas Registradas para Demonstração das Strategies (total 9 propostas) -->
+    <changeSet id="005-carga-propostas-demonstracao" author="alexya">
+        <!-- Propostas Compra 3: Critério MENOR_PRECO (Gamma Tecnologia, id 3, deve vencer com R$ 13.900,00) -->
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="1"/>
+            <column name="valor_proposto" valueNumeric="15500.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="10"/>
+            <column name="data_envio" valueDate="2026-10-18T10:00:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="2"/>
+            <column name="valor_proposto" valueNumeric="14200.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="7"/>
+            <column name="data_envio" valueDate="2026-10-18T11:30:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="3"/>
+            <column name="valor_proposto" valueNumeric="13900.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="15"/>
+            <column name="data_envio" valueDate="2026-10-18T14:15:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="3"/>
+            <column name="fornecedor_id" valueNumeric="9"/>
+            <column name="valor_proposto" valueNumeric="16000.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="5"/>
+            <column name="data_envio" valueDate="2026-10-18T16:00:00"/>
+        </insert>
+
+        <!-- Propostas Compra 4: Critério MAIOR_DESCONTO (Pedro Santos ME, id 6, deve vencer com 15.00%) -->
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="5"/>
+            <column name="percentual_desconto" valueNumeric="8.50"/>
+            <column name="prazo_entrega_dias" valueNumeric="10"/>
+            <column name="data_envio" valueDate="2026-10-19T09:00:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="6"/>
+            <column name="percentual_desconto" valueNumeric="15.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="12"/>
+            <column name="data_envio" valueDate="2026-10-19T10:45:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="7"/>
+            <column name="percentual_desconto" valueNumeric="12.30"/>
+            <column name="prazo_entrega_dias" valueNumeric="8"/>
+            <column name="data_envio" valueDate="2026-10-19T13:20:00"/>
+        </insert>
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="4"/>
+            <column name="fornecedor_id" valueNumeric="10"/>
+            <column name="percentual_desconto" valueNumeric="5.00"/>
+            <column name="prazo_entrega_dias" valueNumeric="5"/>
+            <column name="data_envio" valueDate="2026-10-19T15:00:00"/>
+        </insert>
+
+        <!-- Proposta Compra 5: Critério NAO_SE_APLICA (CyberShield Brasil, id 11, proposta única sem valor nem desconto) -->
+        <insert tableName="proposta">
+            <column name="compra_direta_id" valueNumeric="5"/>
+            <column name="fornecedor_id" valueNumeric="11"/>
+            <column name="prazo_entrega_dias" valueNumeric="30"/>
+            <column name="data_envio" valueDate="2026-10-20T08:30:00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
