@@ -44,6 +44,13 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErroResponse> tratarNoResourceFoundException(
+            org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        ErroResponse erro = new ErroResponse(HttpStatus.NOT_FOUND.value(), "Recurso não encontrado", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> tratarExceptionGenerica(Exception ex) {
         LOGGER.error("Erro inesperado ao processar a solicitação", ex);
