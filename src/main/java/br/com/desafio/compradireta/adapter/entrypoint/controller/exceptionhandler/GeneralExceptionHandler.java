@@ -28,6 +28,22 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
+    @ExceptionHandler(org.springframework.web.method.annotation.HandlerMethodValidationException.class)
+    public ResponseEntity<ErroResponse> tratarHandlerMethodValidationException(
+            org.springframework.web.method.annotation.HandlerMethodValidationException ex) {
+        ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Parâmetro inválido",
+                "Os parâmetros da requisição não atendem aos critérios de validação");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
+    public ResponseEntity<ErroResponse> tratarMethodArgumentNotValidException(
+            org.springframework.web.bind.MethodArgumentNotValidException ex) {
+        ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Dados inválidos",
+                "O corpo da requisição contém campos inválidos ou não preenchidos");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> tratarExceptionGenerica(Exception ex) {
         LOGGER.error("Erro inesperado ao processar a solicitação", ex);

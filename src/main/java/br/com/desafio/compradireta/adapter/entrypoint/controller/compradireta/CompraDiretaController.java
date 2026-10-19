@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.constraints.NotNull;
 import br.com.desafio.compradireta.domain.pagination.Paginacao;
 
 import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.ApurarVencedorCompraDiretaUseCase;
@@ -64,8 +63,8 @@ public class CompraDiretaController {
     @GetMapping
     @Operation(summary = "Lista compras diretas com suporte opcional a paginação")
     public ResponseEntity<?> listar(
-            @RequestParam(required = false) @NotNull Integer page,
-            @RequestParam(required = false) @NotNull Integer size) {
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
         if (page != null || size != null) {
             Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
             return ResponseEntity.ok(listarComprasDiretasUseCase.executar(paginacao));
@@ -119,8 +118,8 @@ public class CompraDiretaController {
     @Operation(summary = "Lista as propostas recebidas para a compra direta com suporte opcional a paginação")
     public ResponseEntity<?> listarPropostas(
             @PathVariable Long id,
-            @RequestParam(required = false) @NotNull Integer page,
-            @RequestParam(required = false) @NotNull Integer size) {
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
         if (page != null || size != null) {
             Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
             return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id, paginacao));
