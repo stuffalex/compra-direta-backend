@@ -64,7 +64,7 @@ public class CompraDiretaController {
 
     @GetMapping
     @Operation(summary = "Lista compras diretas com suporte a paginação")
-    public ResponseEntity<?> listar(
+    public ResponseEntity<Pagina<CompraDiretaResumoOutput>> listar(
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
         Paginacao paginacao = Paginacao.of(pageable.getPageNumber(), pageable.getPageSize());
         return ResponseEntity.ok(listarComprasDiretasUseCase.executar(paginacao));
@@ -114,7 +114,7 @@ public class CompraDiretaController {
 
     @GetMapping("/{id}/propostas")
     @Operation(summary = "Lista as propostas recebidas para a compra direta com suporte a paginação")
-    public ResponseEntity<?> listarPropostas(
+    public ResponseEntity<Pagina<PropostaOutput>> listarPropostas(
             @PathVariable Long id,
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
         Paginacao paginacao = Paginacao.of(pageable.getPageNumber(), pageable.getPageSize());

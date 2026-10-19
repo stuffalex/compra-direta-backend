@@ -4,8 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import br.com.desafio.compradireta.domain.exception.NegocioException;
 import br.com.desafio.compradireta.domain.exception.RecursoNaoEncontradoException;
@@ -28,33 +32,30 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
-    @ExceptionHandler(org.springframework.web.method.annotation.HandlerMethodValidationException.class)
-    public ResponseEntity<ErroResponse> tratarHandlerMethodValidationException(
-            org.springframework.web.method.annotation.HandlerMethodValidationException ex) {
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErroResponse> tratarHandlerMethodValidationException(HandlerMethodValidationException ex) {
         ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Parâmetro inválido",
                 "Os parâmetros da requisição não atendem aos critérios de validação");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
-    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroResponse> tratarMethodArgumentNotValidException(
-            org.springframework.web.bind.MethodArgumentNotValidException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErroResponse> tratarMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Dados inválidos",
                 "O corpo da requisição contém campos inválidos ou não preenchidos");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
-    @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+    @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErroResponse> tratarMissingServletRequestParameterException(
-            org.springframework.web.bind.MissingServletRequestParameterException ex) {
+            MissingServletRequestParameterException ex) {
         ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Parâmetro obrigatório ausente",
                 String.format("O parâmetro '%s' é obrigatório", ex.getParameterName()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
-    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
-    public ResponseEntity<ErroResponse> tratarNoResourceFoundException(
-            org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErroResponse> tratarNoResourceFoundException(NoResourceFoundException ex) {
         ErroResponse erro = new ErroResponse(HttpStatus.NOT_FOUND.value(), "Recurso não encontrado", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
