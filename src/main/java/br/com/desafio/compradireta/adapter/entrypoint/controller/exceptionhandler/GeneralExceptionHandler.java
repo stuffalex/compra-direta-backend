@@ -44,6 +44,14 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
+    @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+    public ResponseEntity<ErroResponse> tratarMissingServletRequestParameterException(
+            org.springframework.web.bind.MissingServletRequestParameterException ex) {
+        ErroResponse erro = new ErroResponse(HttpStatus.BAD_REQUEST.value(), "Parâmetro obrigatório ausente",
+                String.format("O parâmetro '%s' é obrigatório", ex.getParameterName()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
     @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
     public ResponseEntity<ErroResponse> tratarNoResourceFoundException(
             org.springframework.web.servlet.resource.NoResourceFoundException ex) {

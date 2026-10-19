@@ -37,22 +37,16 @@ class ListarComprasDiretasUseCaseTest {
     }
 
     @Test
-    void deveListarTodasAsComprasSemPaginacaoTest() {
-        CompraDireta cd = CompraDireta.builder()
-                .id(1L)
-                .numero("CD-0001/2026")
-                .modalidade(Modalidade.DISPENSA_DE_LICITACAO)
-                .criterioJulgamento(CriterioJulgamento.MENOR_PRECO)
-                .status(StatusCompraDireta.RASCUNHO)
-                .build();
+    void deveRetornarPaginaVaziaQuandoNaoHouverComprasTest() {
+        Paginacao paginacao = Paginacao.of(0, 10);
+        Pagina<CompraDireta> paginaVazia = Pagina.of(List.of(), 0, 0, 10);
+        when(compraDiretaDataProvider.listarPaginado(paginacao)).thenReturn(paginaVazia);
 
-        when(compraDiretaDataProvider.listarTodas()).thenReturn(List.of(cd));
+        Pagina<CompraDiretaResumoOutput> resultado = useCase.executar(paginacao);
 
-        List<CompraDiretaResumoOutput> resultado = useCase.executar();
-
-        assertEquals(1, resultado.size());
-        assertEquals("CD-0001/2026", resultado.get(0).getNumero());
-        verify(compraDiretaDataProvider).listarTodas();
+        assertEquals(0, resultado.getContent().size());
+        assertEquals(0, resultado.getTotalElements());
+        verify(compraDiretaDataProvider).listarPaginado(paginacao);
     }
 
     @Test
