@@ -38,27 +38,18 @@ class ListarPropostasPorCompraUseCaseTest {
     }
 
     @Test
-    void deveListarTodasAsPropostasSemPaginacaoTest() {
+    void deveRetornarPaginaVaziaQuandoNaoHouverPropostasTest() {
         Long compraId = 1L;
-        Fornecedor fornecedor = Fornecedor.builder().id(10L).razaoSocial("Alpha").build();
-        CompraDireta compra = CompraDireta.builder().id(compraId).build();
-        Proposta proposta = Proposta.builder()
-                .id(100L)
-                .compraDireta(compra)
-                .fornecedor(fornecedor)
-                .valorProposto(BigDecimal.valueOf(1500))
-                .prazoEntregaDias(5)
-                .dataEnvio(LocalDateTime.now())
-                .build();
+        Paginacao paginacao = Paginacao.of(0, 10);
+        Pagina<Proposta> paginaVazia = Pagina.of(List.of(), 0, 0, 10);
 
-        when(propostaDataProvider.listarPorCompraDireta(compraId)).thenReturn(List.of(proposta));
+        when(propostaDataProvider.listarPorCompraDiretaPaginado(compraId, paginacao)).thenReturn(paginaVazia);
 
-        List<PropostaOutput> resultado = useCase.executar(compraId);
+        Pagina<PropostaOutput> resultado = useCase.executar(compraId, paginacao);
 
-        assertEquals(1, resultado.size());
-        assertEquals(100L, resultado.get(0).getId());
-        assertEquals("Alpha", resultado.get(0).getFornecedorNome());
-        verify(propostaDataProvider).listarPorCompraDireta(compraId);
+        assertEquals(0, resultado.getContent().size());
+        assertEquals(0, resultado.getTotalElements());
+        verify(propostaDataProvider).listarPorCompraDiretaPaginado(compraId, paginacao);
     }
 
     @Test

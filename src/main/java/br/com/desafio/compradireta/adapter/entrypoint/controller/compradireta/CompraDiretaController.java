@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.constraints.NotNull;
+import br.com.desafio.compradireta.domain.pagination.Pagina;
 import br.com.desafio.compradireta.domain.pagination.Paginacao;
 
 import br.com.desafio.compradireta.domain.usecase.compradireta.apurar.ApurarVencedorCompraDiretaUseCase;
@@ -62,15 +63,11 @@ public class CompraDiretaController {
     }
 
     @GetMapping
-    @Operation(summary = "Lista compras diretas com suporte opcional a paginação")
-    public ResponseEntity<?> listar(
-            @RequestParam(required = false) @NotNull Integer page,
-            @RequestParam(required = false) @NotNull Integer size) {
-        if (page != null || size != null) {
-            Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
-            return ResponseEntity.ok(listarComprasDiretasUseCase.executar(paginacao));
-        }
-        return ResponseEntity.ok(listarComprasDiretasUseCase.executar());
+    @Operation(summary = "Lista compras diretas com suporte a paginação")
+    public ResponseEntity<Pagina<CompraDiretaResumoOutput>> listar(
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+        Paginacao paginacao = Paginacao.of(pageable.getPageNumber(), pageable.getPageSize());
+        return ResponseEntity.ok(listarComprasDiretasUseCase.executar(paginacao));
     }
 
     @GetMapping("/{id}")
@@ -116,16 +113,12 @@ public class CompraDiretaController {
     }
 
     @GetMapping("/{id}/propostas")
-    @Operation(summary = "Lista as propostas recebidas para a compra direta com suporte opcional a paginação")
-    public ResponseEntity<?> listarPropostas(
+    @Operation(summary = "Lista as propostas recebidas para a compra direta com suporte a paginação")
+    public ResponseEntity<Pagina<PropostaOutput>> listarPropostas(
             @PathVariable Long id,
-            @RequestParam(required = false) @NotNull Integer page,
-            @RequestParam(required = false) @NotNull Integer size) {
-        if (page != null || size != null) {
-            Paginacao paginacao = Paginacao.of(page == null ? 0 : page, size == null ? 20 : size);
-            return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id, paginacao));
-        }
-        return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id));
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
+        Paginacao paginacao = Paginacao.of(pageable.getPageNumber(), pageable.getPageSize());
+        return ResponseEntity.ok(listarPropostasPorCompraUseCase.executar(id, paginacao));
     }
 
     @GetMapping("/{id}/notificacoes")
